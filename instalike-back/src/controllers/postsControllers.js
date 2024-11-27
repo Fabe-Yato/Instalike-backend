@@ -1,5 +1,5 @@
 import fs from "fs";
-import {getTodosPosts, postFeito, atualizarPost} from "../models/postsModel.js";
+import {getTodosPosts, postFeito, atualizarPost, postDeletado, imagemAtualizadaNoBanco} from "../models/postsModel.js";
 import gerarDescricaoComGemini from "../services/geminiService.js";
 
 const listarPosts = ( async (req, res) => {
@@ -56,4 +56,29 @@ const atualizarNovoPost = ( async (req, res) => {
     }
 });
 
-export {listarPosts, criarPosts, uploadImagem, atualizarNovoPost};
+// const atualizarImg = ( async (req,res) => {
+//     const id = req.params.id;
+//     const imagemNova = req.body.imgUrl;
+//     try{
+//         const outraImagem = await imagemAtualizadaNoBanco(id, imagemNova);
+//         const imagemAtualizada = `uploads/${id}.png`;
+//         fs.renameSync(req.file.path, imagemAtualizada);
+//         res.status(200).json(outraImagem);
+//     }catch(erro){
+//         console.error(erro);
+//         res.status(500).json({"erro": "Não foi possível alterar a imagem"})
+//     }
+// }) 
+
+const deletePost = (async (req,res) => {
+    const id = req.body._id;
+    try{
+        const deletarPost = await postDeletado(id);
+        res.status(200).json(deletarPost);
+    }catch (erro){
+        console.error(erro);
+        res.status(500).json({"erro": "Não foi possivel deletar a imagem"})
+    }
+})
+
+export {listarPosts, criarPosts, uploadImagem, atualizarNovoPost, atualizarImg, deletePost};

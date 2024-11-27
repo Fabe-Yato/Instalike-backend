@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import cors from "cors";
-import {listarPosts, criarPosts, uploadImagem, atualizarNovoPost} from "../controllers/postsControllers.js";
+import {listarPosts, criarPosts, uploadImagem, atualizarNovoPost, atualizarImg, deletePost} from "../controllers/postsControllers.js";
 import gerarDescricaoComGemini from "../services/geminiService.js";
 
 const corsOptions = {
@@ -28,6 +28,9 @@ const routes = (app) => {
     app.post("/posts", criarPosts);
     app.post("/upload", upload.single("imagem"), uploadImagem);
     app.put("/upload/:id", atualizarNovoPost);
+    app.put("/changeImg/:id", atualizarImg)
+    app.delete("/deletePost", deletePost);
+
 }
 
 export default routes;

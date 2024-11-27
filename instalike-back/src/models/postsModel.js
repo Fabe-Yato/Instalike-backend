@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { ObjectId } from "mongodb";
 import conectarAoBanco from "../config/dbConfig.js";
 
@@ -22,4 +23,18 @@ const atualizarPost = async (id, novoPost) => {
     return colecao.updateOne({_id: new ObjectId(objID)}, {$set:novoPost})
 }
 
-export {getTodosPosts, postFeito, atualizarPost};
+const imagemAtualizadaNoBanco = ( async(id, imagemNova) => {
+    const db = conexao.db("InstaBytes"); //conexão com o BD do Mongo
+    const colecao = db.collection("posts");
+    const objID = ObjectId.createFromHexString(id);
+    return colecao.updateOne({_id: new ObjectId(objID)}, {$set:{imgUrl: imagemNova}})
+})
+
+const postDeletado = async (id) => {
+    const db = conexao.db("InstaBytes"); //conexão com o BD do Mongo
+    const colecao = db.collection("posts");
+    const objID = ObjectId.createFromHexString(id);
+    return colecao.deleteOne({_id: new ObjectId(objID)});
+}
+
+export {getTodosPosts, postFeito, atualizarPost, postDeletado, imagemAtualizadaNoBanco};
